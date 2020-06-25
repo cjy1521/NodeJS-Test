@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const config = require('./config/key');
 
+const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
 
 //application/x-www-form-urlencoded
@@ -65,5 +66,21 @@ app.post("/api/users/login", (req, res) => {    // 요청된 이메일을 데이
         });
     });
 });
+
+
+app.get('/api/users/auth', auth, (req, res) => {
+    //여기까지 미들웨어를 통과했다 => Auth = true
+    res.status(200).json({
+        _id: ReadableStream.user._id,
+        isAdmin: req.user.role === 0 ? false : true, //role이 0이 아니면 admin, 0이면 일반유저
+        isAuth: true,
+        email: req.uesr.email,
+        name: req.user.name,
+        lastname: req.user.lastname,
+        role: req.user.role,
+        image: req.user.image
+    })
+})
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
