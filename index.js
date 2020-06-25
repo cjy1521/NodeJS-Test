@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //application/json
 app.use(bodyParser.json());
 
+app.use(cookieParser());
+
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
@@ -71,7 +73,7 @@ app.post("/api/users/login", (req, res) => {    // 요청된 이메일을 데이
 app.get('/api/users/auth', auth, (req, res) => {
     //여기까지 미들웨어를 통과했다 => Auth = true
     res.status(200).json({
-        _id: ReadableStream.user._id,
+        _id: req.user._id,
         isAdmin: req.user.role === 0 ? false : true, //role이 0이 아니면 admin, 0이면 일반유저
         isAuth: true,
         email: req.uesr.email,
@@ -80,6 +82,18 @@ app.get('/api/users/auth', auth, (req, res) => {
         role: req.user.role,
         image: req.user.image
     })
+})
+
+
+app.get('/api/users/logout', auth, (req, res) => {
+    User.findOneAndUpdate({ _id: req.user._id },
+        { token: "" }
+        , (err, user) => {
+            if (err) return res.json({ success: false, err });
+            return res.status(200).send({
+                success: true
+            })
+        })
 })
 
 
