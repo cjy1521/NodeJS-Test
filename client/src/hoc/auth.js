@@ -24,13 +24,13 @@ export default function (SpecificComponent, option, adminRoute = null) {
                 // 비로그인 상태
                 if (!response.payload.isAuth) {
                     if (option) {
-                        alert('비정상적인 접근입니다.')
+                        alert('비정상적인 접근입니다.(비로그인)')
                         props.history.push('/login')
                     }
                 } else {
                     // 로그인 상태
-                   if (adminRoute && !response.payload.isAdmin) {
-                    alert('비정상적인 접근입니다.')
+                    if (adminRoute && !response.payload.isAdmin) {
+                        // alert('비정상적인 접근입니다.')
                         props.history.push('/')
                     } else {
                         if (option === false)
