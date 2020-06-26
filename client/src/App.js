@@ -14,10 +14,7 @@ function App() {
   return (
     <Router>
       <div>
-
-
         <hr />
-
         {/*
         A <Switch> looks through all its children <Route>
         elements and renders the first one whose path
@@ -27,11 +24,8 @@ function App() {
       */}
         <Switch>
           <Route exact path="/" component={LandingPage} />
-
           <Route exact path="/login" component={LoginPage} />
-
           <Route exact path="/register" component={RegisterPage} />
-
         </Switch>
       </div>
     </Router>
