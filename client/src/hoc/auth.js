@@ -18,11 +18,11 @@ export default function (SpecificComponent, option, adminRoute = null) {
 
         useEffect(() => {
 
-            dispatch(auth()).then(response => {
+            dispatch(auth()).then(async response => {
                 console.log(response)
 
                 // 비로그인 상태
-                if (!response.payload.isAuth) {
+                if (await !response.payload.isAuth) {
                     if (option) {
                         alert('비정상적인 접근입니다.(비로그인)')
                         props.history.push('/login')
@@ -39,7 +39,7 @@ export default function (SpecificComponent, option, adminRoute = null) {
                     }
                 }
             })
-        }, [])
+        }, [dispatch, props.history])
 
         return (
             <SpecificComponent />
